@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "mo-magd"
+  },
+  "targets": {
+    "mo-magd": {
+      "hosting": {
+        "demo": [
+          "procurement-contracts-poc"
+        ]
+      }
+    }
+  }
+}

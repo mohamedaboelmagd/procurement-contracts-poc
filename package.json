@@ -1,0 +1,17 @@
+{
+  "name": "procurement-contracts-poc",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Procurement & contracts proof of concept: RFx sourcing (sealed bids, levelling, award) → contracts → change orders. MERN + TypeScript.",
+  "scripts": {
+    "setup": "npm ci --prefix backend && npm ci --prefix frontend",
+    "test": "npm test --prefix backend && npm test --prefix frontend",
+    "typecheck": "npm run typecheck --prefix backend && npm run typecheck --prefix frontend",
+    "build": "npm run build --prefix backend && npm run build --prefix frontend",
+    "dev:api": "npm run dev --prefix backend",
+    "dev:web": "npm run dev --prefix frontend",
+    "build:demo": "npm run build --prefix frontend",
+    "deploy:demo": "npm run build:demo && npx -y firebase-tools@latest deploy --only hosting:demo",
+    "smoke:demo": "node scripts/demo-smoke.mjs https://procurement-contracts-poc.web.app"
+  }
+}

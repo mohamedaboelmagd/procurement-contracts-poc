@@ -1,0 +1,27 @@
+# MongoDB as a single-node replica set (multi-document transactions need one) + the API.
+services:
+  mongo:
+    image: mongo:8
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    ports: ["27017:27017"]
+    volumes: [mongo-data:/data/db]
+    healthcheck:
+      # Initiates the replica set on first boot, then reports healthy once it has a primary.
+      test: ["CMD", "mongosh", "--quiet", "--eval", "try { rs.status().ok } catch (e) { rs.initiate({ _id: 'rs0', members: [{ _id: 0, host: 'mongo:27017' }] }).ok }"]
+      interval: 3s
+      timeout: 5s
+      retries: 30
+
+  api:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      MONGO_URL: mongodb://mongo:27017/procurement?replicaSet=rs0
+      JWT_SECRET: ${JWT_SECRET:-local-compose-secret-change-me-local-compose}
+      SEED_DEMO: "true"
+    ports: ["3000:3000"]
+    depends_on:
+      mongo: { condition: service_healthy }
+
+volumes:
+  mongo-data:
